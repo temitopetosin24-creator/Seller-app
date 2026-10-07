@@ -163,13 +163,16 @@ footer p { color: rgba(255,255,255,.55); font-size: 12px; }
 .copyright p { margin: 0 0 5px; }
 .seller-access {
   border: 0;
-  padding: 2px 0;
-  color: rgba(255,255,255,.32);
+  min-height: 44px;
+  padding: 10px 8px;
+  margin: -10px -8px;
+  color: rgba(255,255,255,.45);
   background: transparent;
   font-size: 10px;
   text-decoration: underline;
   text-underline-offset: 3px;
   cursor: pointer;
+  touch-action: manipulation;
 }
 .seller-access:hover, .seller-access:focus-visible { color: rgba(255,255,255,.75); }
 
