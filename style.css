@@ -160,6 +160,18 @@ footer p { color: rgba(255,255,255,.55); font-size: 12px; }
 .footer-links { display: flex; gap: 20px; font-size: 12px; font-weight: 700; }
 .footer-links button { color: white; background: transparent; border: 0; padding: 0; font-weight: 700; }
 .copyright { text-align: right; }
+.copyright p { margin: 0 0 5px; }
+.seller-access {
+  border: 0;
+  padding: 2px 0;
+  color: rgba(255,255,255,.32);
+  background: transparent;
+  font-size: 10px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.seller-access:hover, .seller-access:focus-visible { color: rgba(255,255,255,.75); }
 
 .overlay { position: fixed; inset: 0; z-index: 30; background: rgba(0,0,0,.38); }
 .cart-drawer {
@@ -201,6 +213,16 @@ footer p { color: rgba(255,255,255,.55); font-size: 12px; }
 .modal input { border: 1px solid var(--line); border-radius: 11px; padding: 13px; outline: none; background: white; }
 .modal input:focus { border-color: var(--green-2); }
 .full { width: 100%; }
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 17px 0; color: var(--muted); font-size: 11px; }
+.auth-divider::before, .auth-divider::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+.google-sign-in { display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid var(--line); border-radius: 11px; padding: 12px; background: white; font-weight: 800; }
+.google-sign-in:hover { background: #f8f7f3; }
+.google-mark { font-size: 17px; font-weight: 900; color: #4285f4; }
+.reset-password-btn { border: 0; background: transparent; color: var(--green-2); font-size: 12px; font-weight: 700; justify-self: end; }
+.auth-message { color: #9a3f2f; font-size: 12px; line-height: 1.5; margin: 14px 0 0; }
+.auth-message:empty { display: none; }
+.seller-session { margin-top: 16px; }
+.seller-session p { font-size: 13px; overflow-wrap: anywhere; }
 .demo-note { font-size: 10px; color: var(--muted); text-align: center; margin-top: 18px; }
 
 .toast {
@@ -222,7 +244,6 @@ footer p { color: rgba(255,255,255,.55); font-size: 12px; }
   .container { width: min(100% - 28px, 1160px); }
   .nav { height: 68px; }
   .desktop-nav { display: none; }
-  .seller-btn { display: none; }
   .hero { padding: 48px 0; }
   .hero h1 { font-size: 48px; }
   .hero-card { min-height: 275px; border-radius: 28px; }

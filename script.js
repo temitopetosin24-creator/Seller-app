@@ -13,6 +13,23 @@ const DELIVERY_FEE = 2500;
 const FREE_DELIVERY_THRESHOLD = 75000;
 const WHATSAPP_NUMBER = "2348166438947"; // CHANGE THIS to your business WhatsApp number.
 
+let firebaseAuth = null;
+let firebaseSetupError = "";
+const firebaseConfig = window.CORNER_STALL_FIREBASE_CONFIG;
+
+if (window.firebase && firebaseConfig && firebaseConfig.apiKey &&
+    !firebaseConfig.apiKey.startsWith("YOUR_")) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+    firebaseAuth = firebase.auth();
+  } catch (error) {
+    firebaseSetupError = "Firebase could not be initialized. Check the configuration in firebase-config.js.";
+    console.error(firebaseSetupError, error);
+  }
+} else {
+  firebaseSetupError = "Add your Firebase project settings to firebase-config.js to enable sign in.";
+}
+
 let cart = JSON.parse(localStorage.getItem("cornerStallCart") || "[]");
 let selectedCategory = "All";
 
@@ -237,12 +254,61 @@ function checkoutWhatsApp() {
 function openSellerModal() {
   $("#sellerModal").classList.remove("hidden");
   document.body.style.overflow = "hidden";
+  $("#sellerAuthMessage").textContent = firebaseAuth ? "" : firebaseSetupError;
   setTimeout(() => $("#sellerEmail").focus(), 100);
 }
 
 function closeSellerModal() {
   $("#sellerModal").classList.add("hidden");
   document.body.style.overflow = "";
+}
+
+function sellerAuthError(error) {
+  const messages = {
+    "auth/invalid-credential": "The email or password is incorrect.",
+    "auth/user-not-found": "No seller account was found for that email.",
+    "auth/wrong-password": "The email or password is incorrect.",
+    "auth/invalid-email": "Enter a valid email address.",
+    "auth/too-many-requests": "Too many attempts. Please wait and try again.",
+    "auth/popup-closed-by-user": "The Google sign-in window was closed before sign-in completed.",
+    "auth/popup-blocked": "Your browser blocked the Google sign-in window. Allow pop-ups and try again.",
+    "auth/unauthorized-domain": "This website domain is not authorized in Firebase Authentication settings.",
+    "auth/operation-not-allowed": "Enable this sign-in method in Firebase Authentication settings.",
+    "auth/network-request-failed": "A network error interrupted sign-in. Check your connection and try again."
+  };
+
+  console.error("Seller authentication failed:", error);
+  $("#sellerAuthMessage").textContent =
+    messages[error.code] || "Sign-in failed. Please check your details and Firebase settings.";
+}
+
+function updateSellerSession(user) {
+  const signedIn = Boolean(user);
+  $("#sellerForm").classList.toggle("hidden", signedIn);
+  $(".auth-divider").classList.toggle("hidden", signedIn);
+  $("#googleSignInBtn").classList.toggle("hidden", signedIn);
+  $("#sellerSession").classList.toggle("hidden", !signedIn);
+  $("#sellerUserEmail").textContent = user ? (user.email || "Google account") : "";
+  if (signedIn) $("#sellerAuthMessage").textContent = "";
+}
+
+async function handleSellerAuthState(user) {
+  if (!user) {
+    updateSellerSession(null);
+    return;
+  }
+
+  try {
+    const token = await user.getIdTokenResult(true);
+    if (token.claims.seller !== true) {
+      await firebaseAuth.signOut();
+      $("#sellerAuthMessage").textContent = "This account is not approved for seller access. Contact the store owner.";
+      return;
+    }
+    updateSellerSession(user);
+  } catch (error) {
+    sellerAuthError(error);
+  }
 }
 
 function showToast(message) {
@@ -287,7 +353,6 @@ $("#clearFiltersBtn").addEventListener("click", () => {
 });
 
 $("#checkoutBtn").addEventListener("click", checkoutWhatsApp);
-$("#sellerBtn").addEventListener("click", openSellerModal);
 $("#footerSellerBtn").addEventListener("click", openSellerModal);
 $("#closeSellerBtn").addEventListener("click", closeSellerModal);
 
@@ -297,8 +362,49 @@ $("#sellerModal").addEventListener("click", event => {
 
 $("#sellerForm").addEventListener("submit", event => {
   event.preventDefault();
-  showToast("Demo sign-in submitted");
-  closeSellerModal();
+  if (!firebaseAuth) {
+    $("#sellerAuthMessage").textContent = firebaseSetupError;
+    return;
+  }
+
+  firebaseAuth.signInWithEmailAndPassword(
+    $("#sellerEmail").value.trim(),
+    $("#sellerPassword").value
+  ).catch(sellerAuthError);
+});
+
+$("#googleSignInBtn").addEventListener("click", () => {
+  if (!firebaseAuth) {
+    $("#sellerAuthMessage").textContent = firebaseSetupError;
+    return;
+  }
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebaseAuth.signInWithPopup(provider).catch(sellerAuthError);
+});
+
+$("#resetPasswordBtn").addEventListener("click", () => {
+  if (!firebaseAuth) {
+    $("#sellerAuthMessage").textContent = firebaseSetupError;
+    return;
+  }
+
+  const email = $("#sellerEmail").value.trim();
+  if (!email) {
+    $("#sellerAuthMessage").textContent = "Enter your email address first to reset your password.";
+    $("#sellerEmail").focus();
+    return;
+  }
+
+  firebaseAuth.sendPasswordResetEmail(email)
+    .then(() => {
+      $("#sellerAuthMessage").textContent = "If an account exists for this email, a password reset link has been sent.";
+    })
+    .catch(sellerAuthError);
+});
+
+$("#sellerSignOutBtn").addEventListener("click", () => {
+  if (firebaseAuth) firebaseAuth.signOut().catch(sellerAuthError);
 });
 
 document.addEventListener("keydown", event => {
@@ -309,5 +415,6 @@ document.addEventListener("keydown", event => {
 });
 
 $("#year").textContent = new Date().getFullYear();
+if (firebaseAuth) firebaseAuth.onAuthStateChanged(handleSellerAuthState, sellerAuthError);
 renderProducts();
 renderCart();

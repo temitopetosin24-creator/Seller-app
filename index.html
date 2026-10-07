@@ -25,7 +25,6 @@
       </nav>
 
       <div class="nav-actions">
-        <button class="icon-btn seller-btn" id="sellerBtn" title="Seller sign in">Seller sign in</button>
         <button class="cart-btn" id="cartBtn">
           Cart <span id="cartCount">0</span>
         </button>
@@ -141,9 +140,11 @@
       <div class="footer-links">
         <a href="#shop">Shop</a>
         <a href="#categories">Categories</a>
-        <button id="footerSellerBtn">Seller sign in</button>
       </div>
-      <p class="copyright">© <span id="year"></span> Corner Stall</p>
+      <div class="copyright">
+        <p>© <span id="year"></span> Corner Stall</p>
+        <button class="seller-access" id="footerSellerBtn">Seller sign in</button>
+      </div>
     </div>
   </footer>
 
@@ -188,18 +189,32 @@
 
       <form id="sellerForm">
         <label>Email address
-          <input type="email" id="sellerEmail" placeholder="seller@example.com" required />
+          <input type="email" id="sellerEmail" placeholder="seller@example.com" autocomplete="email" required />
         </label>
         <label>Password
-          <input type="password" id="sellerPassword" placeholder="••••••••" required />
+          <input type="password" id="sellerPassword" placeholder="••••••••" autocomplete="current-password" required />
         </label>
         <button class="primary-btn full" type="submit">Sign in</button>
+        <button class="reset-password-btn" id="resetPasswordBtn" type="button">Forgot password?</button>
       </form>
-      <p class="demo-note">Demo interface — connect this form to your backend/authentication later.</p>
+      <div class="auth-divider"><span>or</span></div>
+      <button class="google-sign-in full" id="googleSignInBtn" type="button">
+        <span class="google-mark" aria-hidden="true">G</span>
+        Continue with Google
+      </button>
+      <p class="auth-message" id="sellerAuthMessage" role="status" aria-live="polite"></p>
+      <div class="seller-session hidden" id="sellerSession">
+        <p>Signed in as <strong id="sellerUserEmail"></strong></p>
+        <button class="secondary-btn full" id="sellerSignOutBtn" type="button">Sign out</button>
+      </div>
+      <p class="demo-note">Seller access is limited to accounts approved by the store owner.</p>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
