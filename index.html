@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Corner Stall - School-run essentials for families." />
+  <title>Corner Stall — School-run essentials</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="Corner Stall home">
+        <span class="brand-mark">CS</span>
+        <span>
+          <strong>Corner Stall</strong>
+          <small>School-run essentials</small>
+        </span>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="#shop">Shop</a>
+        <a href="#categories">Categories</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn seller-btn" id="sellerBtn" title="Seller sign in">Seller sign in</button>
+        <button class="cart-btn" id="cartBtn">
+          Cart <span id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">BACK TO SCHOOL, MADE SIMPLE</p>
+          <h1>Everything they need for the school run.</h1>
+          <p class="hero-copy">
+            Shop practical school essentials from bags and shoes to lunch boxes and clothes.
+            Simple shopping, clear prices and easy checkout.
+          </p>
+          <div class="hero-actions">
+            <a href="#shop" class="primary-btn">Shop essentials</a>
+            <button class="secondary-btn" id="heroCartBtn">View cart</button>
+          </div>
+          <div class="hero-notes">
+            <span>✓ Quality essentials</span>
+            <span>✓ Easy ordering</span>
+            <span>✓ WhatsApp checkout</span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-illustration">
+            <span class="floating-bag">🎒</span>
+            <span class="floating-book">📚</span>
+            <span class="floating-lunch">🍱</span>
+            <div class="hero-circle">READY<br><b>FOR<br>SCHOOL</b></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="category-strip" id="categories">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SHOP BY CATEGORY</p>
+            <h2>School-run favourites</h2>
+          </div>
+          <button class="text-btn" id="allCategoriesBtn">View all →</button>
+        </div>
+
+        <div class="category-grid">
+          <button class="category-card" data-category="Bags"><span>🎒</span><b>Bags</b><small>School bags & backpacks</small></button>
+          <button class="category-card" data-category="Shoes"><span>👟</span><b>Shoes</b><small>Everyday school shoes</small></button>
+          <button class="category-card" data-category="Clothes"><span>👕</span><b>Clothes</b><small>Uniforms & essentials</small></button>
+          <button class="category-card" data-category="Lunch boxes"><span>🍱</span><b>Lunch boxes</b><small>Lunch & drink storage</small></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop-section" id="shop">
+      <div class="container">
+        <div class="section-heading shop-heading">
+          <div>
+            <p class="eyebrow">OUR PICKS</p>
+            <h2>School essentials</h2>
+          </div>
+          <div class="shop-tools">
+            <label class="search-box">
+              <span>⌕</span>
+              <input id="searchInput" type="search" placeholder="Search products..." />
+            </label>
+            <select id="sortSelect" aria-label="Sort products">
+              <option value="featured">Featured</option>
+              <option value="price-low">Price: low to high</option>
+              <option value="price-high">Price: high to low</option>
+              <option value="rating">Highest rated</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="active-filter" id="activeFilter"></div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="empty-state hidden" id="emptyState">
+          <div>🔎</div>
+          <h3>No products found</h3>
+          <p>Try another search or category.</p>
+          <button class="secondary-btn" id="clearFiltersBtn">Clear filters</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="promise" id="about">
+      <div class="container promise-grid">
+        <div>
+          <p class="eyebrow">WHY CORNER STALL?</p>
+          <h2>Less running around. More getting ready.</h2>
+        </div>
+        <div class="promise-items">
+          <div><span>01</span><div><b>Useful products</b><p>Essentials selected for everyday school life.</p></div></div>
+          <div><span>02</span><div><b>Simple ordering</b><p>Add what you need and send your order directly on WhatsApp.</p></div></div>
+          <div><span>03</span><div><b>Family friendly</b><p>A straightforward shopping experience on phone or desktop.</p></div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">Corner Stall</div>
+        <p>School-run essentials, made simple.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#shop">Shop</a>
+        <a href="#categories">Categories</a>
+        <button id="footerSellerBtn">Seller sign in</button>
+      </div>
+      <p class="copyright">© <span id="year"></span> Corner Stall</p>
+    </div>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="overlay hidden" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="drawer-head">
+      <div>
+        <p class="eyebrow">YOUR ORDER</p>
+        <h2>Your cart</h2>
+      </div>
+      <button class="close-btn" id="closeCartBtn" aria-label="Close cart">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-empty hidden" id="cartEmpty">
+      <div>🛒</div>
+      <h3>Your cart is empty</h3>
+      <p>Add some school essentials to get started.</p>
+      <button class="primary-btn" id="startShoppingBtn">Start shopping</button>
+    </div>
+
+    <div class="cart-summary" id="cartSummary">
+      <div class="delivery-message" id="deliveryMessage"></div>
+      <div class="summary-row"><span>Subtotal</span><strong id="subtotal">₦0</strong></div>
+      <div class="summary-row"><span>Delivery</span><strong id="delivery">₦0</strong></div>
+      <div class="summary-row total"><span>Total</span><strong id="total">₦0</strong></div>
+      <button class="checkout-btn" id="checkoutBtn">Order on WhatsApp</button>
+      <p class="checkout-note">Your order details will be prepared for WhatsApp.</p>
+    </div>
+  </aside>
+
+  <!-- Seller modal -->
+  <div class="modal-backdrop hidden" id="sellerModal">
+    <div class="modal">
+      <button class="close-btn" id="closeSellerBtn">×</button>
+      <div class="seller-icon">🏪</div>
+      <p class="eyebrow">SELLER PORTAL</p>
+      <h2>Seller sign in</h2>
+      <p class="modal-copy">Sign in to manage your products and orders.</p>
+
+      <form id="sellerForm">
+        <label>Email address
+          <input type="email" id="sellerEmail" placeholder="seller@example.com" required />
+        </label>
+        <label>Password
+          <input type="password" id="sellerPassword" placeholder="••••••••" required />
+        </label>
+        <button class="primary-btn full" type="submit">Sign in</button>
+      </form>
+      <p class="demo-note">Demo interface — connect this form to your backend/authentication later.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
